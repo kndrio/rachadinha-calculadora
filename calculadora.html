@@ -1,0 +1,286 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+</head>
+<body>
+    <script>
+        /* Custom filtering function which will search data in column four between two values */
+        $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                var min = parseInt( $('#min').val(), 10 );
+                var max = parseInt( $('#max').val(), 10 );
+                var age = parseFloat( data[5] ) || 0; // use data for the age column
+        
+                if ( ( isNaN( min ) && isNaN( max ) ) ||
+                    ( isNaN( min ) && age <= max ) ||
+                    ( min <= age   && isNaN( max ) ) ||
+                    ( min <= age   && age <= max ) )
+                {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        /*Deputados*/
+        $(document).ready(function() {
+            var table = $('#example').DataTable( {
+                "ajax": "data/data-calculadora.json",
+                "columns": [
+                    { "data": "NOME_DEPUTADO" },
+                    { "data": "NOME_DO_ASSESSOR" },
+                    { "data": "RENDIMENTO_FUNCIONARIO" },
+                    { "data": "RENDIMENTO_LIQUIDO" },
+                    { "data": "REPRESENTACAO_GRATIFICACAO" },
+                    { "data": "SCORE" },
+                    { "data": "SOCIO_EMPRESA" },
+                    { "data": "SEXO" },
+                    { "data": "RACA" },
+                    { "data": "PESSOA_COM_DEFICIENCIA" },
+                    { "data": "CARGO" },
+                    { "data": "GABINETE" },
+                    { "data": "SALARIO" },
+                    { "data": "DOMICILIO_PROFISSIONAL" },
+                    { "data": "TELETRABALHO" },
+                    { "data": "NOME_PAIS" },
+                    { "data": "NOME_AVOS_PATERNOS" },
+                    { "data": "NOME_AVOS_MATERNOS" },
+                    { "data": "FILIACAO" },
+                    { "data": "CUMULACAO_DE_CARGOS_INACUMULAVEIS" },
+                    { "data": "CUMULACAO_DE_CARGOS_ACUMULAVEIS_HORARIOS_INCOMPATIVEIS" },
+                    { "data": "OAB_ATIVA_VEDACAO_LEGAL" },
+                    { "data": "SOCIO_GERENTE " },
+                    { "data": "BOLSA_FAMILIA_VEDACAO_LEGAL" },
+                    { "data": "LOAS_BPC_VEDACAO_LEGAL" },
+                    { "data": "NEPOTISMO" },
+                    { "data": "AUSENCIA_DE_INFORMACOES" },
+                    { "data": "VINCULACAO_A_GABINETE_ENVOLVIDO_EM_RACHADINHA_OU_CORRUPCAO" },
+                    { "data": "AUXILIO_EDU" },
+                    { "data": "AUXILIO_OUTROS" },
+                    { "data": "FOLHA_DE_PGTO_AUSENCIA" },
+                    { "data": "ORDEM_DE_PGTO_AUSÊNCIA" },
+                    { "data": "FOLHA_DIFERENTE_ORDEM" },
+                    { "data": "OBITO" },
+                    { "data": "SOCIO_EM_EMPRESA" },
+                    { "data": "EXPERIENCIA_PROFISSIONAL_CARGO_ATUAL_AUSENCIA_CORRELACAO" },
+                    { "data": "EXPERIENCIA_PROFISSIONAL_PPP_INSS_AUSENCIA_CORRELACAO" },
+                    { "data": "IDADE_AUSENCIA_CORRELACAO" },
+                    { "data": "DOMICILIO_ELEITORAL_AUSENCIA_CORRELACAO" },
+                    { "data": "DOMICILIO_FISCAL_AUSENCIA_CORRELACAO" },
+                    { "data": "DOMICILIO_RESIDENCIAL_AUSENCIA_CORRELACAO" },
+                    { "data": "AREA_DE_VOTAÇÃO_DO_LEGISLADOR_AUSENCIA_CORRELACAO" },
+                    { "data": "REMESSAS_EXTERIOR_AUSENCIA_CORRELACAO" },
+                    { "data": "VIAGENS_EXTERIOR_AUSENCIA_CORRELACAO" },
+                    { "data": "INQUERITOS" },
+                    { "data": "ACOES_PENAIS" },
+                    { "data": "CRIPTO_MOEDAS" },
+                    { "data": "APOSENTADORIA" },
+                    { "data": "PENSAO" },
+                    { "data": "FACEBOOK_OSTENTACAO_ROBO" },
+                    { "data": "FACEBOOK_OSTENTACAO_VOLUNTARIOS" },
+                    { "data": "COAF" },
+                    { "data": "SPC_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "SERASA_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "SCORE_CREDITO_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "NOTAS_FISCAIS_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "RGI_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "DETRAN_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "BARCO_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "AVIAO_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "DOADOR_DE_CAMPANHA" },
+                    { "data": "ESCOLARIDADE_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "CAGED_REUNIAO_MPRJ_AUSENCIA_CORRELACAO_COM_CARGO" },
+                    { "data": "SALDO_BANCARIO" },
+                    { "data": "MOVIMENTACOES" },
+                    { "data": "OUTROS" }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [ 6 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [ 3 ],
+                        "visible": false
+                    }
+                ]
+            } );
+
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup( function() {
+            table.draw();
+        } );
+
+        } );
+    </script>
+<select multiple size="4"> 
+    <option value="American">CAMPO 1</option>
+    <option value="Andean">CAMPO 2</option>
+     <option value="Chilean">CAMPO 3</option>
+    <option value="Greater">CAMPO 4</option>
+     <option value="James's">CAMPO 5</option> 
+     <option value="Lesser">CAMPO 6</option> </select>
+
+
+
+        <table border="0" cellspacing="5" cellpadding="5">
+                <tbody><tr>
+                    <td>Minimum Score:</td>
+                    <td><input type="text" id="min" name="min"></td>
+                </tr>
+                <tr>
+                    <td>Maximum Score:</td>
+                    <td><input type="text" id="max" name="max"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Deputado</th>
+                        <th>Assessor</th>
+                        <th>Rendimento Funcionário</th>
+                        <th>Rendimento Líquido</th>
+                        <th>Representacao/Gratificação</th>
+                        <th>Score</th>
+                        <th>Socio</th>
+                        <th>SEXO</th>
+                        <th>RACA</th>
+                        <th>PESSOA_COM_DEFICIENCIA</th>
+                        <th>CARGO</th>
+                        <th>GABINETE</th>
+                        <th>SALARIO</th>
+                        <th>DOMICILIO_PROFISSIONAL</th>
+                        <th>TELETRABALHO</th>
+                        <th>NOME_PAIS</th>
+                        <th>NOME_AVOS_PATERNOS</th>
+                        <th>NOME_AVOS_MATERNOS</th>
+                        <th>FILIACAO</th>
+                        <th>CUMULACAO_DE_CARGOS_INACUMULAVEIS</th>
+                        <th>CUMULACAO_DE_CARGOS_ACUMULAVEIS_HORARIOS_INCOMPATIVEIS</th>
+                        <th>OAB_ATIVA_VEDACAO_LEGAL</th>
+                        <th>SOCIO_GERENTE </th>
+                        <th>BOLSA_FAMILIA_VEDACAO_LEGAL</th>
+                        <th>LOAS_BPC_VEDACAO_LEGAL</th>
+                        <th>NEPOTISMO</th>
+                        <th>AUSENCIA_DE_INFORMACOES</th>
+                        <th>VINCULACAO_A_GABINETE_ENVOLVIDO_EM_RACHADINHA_OU_CORRUPCAO</th>
+                        <th>AUXILIO_EDU</th>
+                        <th>AUXILIO_OUTROS</th>
+                        <th>FOLHA_DE_PGTO_AUSENCIA</th>
+                        <th>ORDEM_DE_PGTO_AUSÊNCIA</th>
+                        <th>FOLHA_DIFERENTE_ORDEM</th>
+                        <th>OBITO</th>
+                        <th>SOCIO_EM_EMPRESA</th>
+                        <th>EXPERIENCIA_PROFISSIONAL_CARGO_ATUAL_AUSENCIA_CORRELACAO</th>
+                        <th>EXPERIENCIA_PROFISSIONAL_PPP_INSS_AUSENCIA_CORRELACAO</th>
+                        <th>IDADE_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_ELEITORAL_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_FISCAL_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_RESIDENCIAL_AUSENCIA_CORRELACAO</th>
+                        <th>AREA_DE_VOTAÇÃO_DO_LEGISLADOR_AUSENCIA_CORRELACAO</th>
+                        <th>REMESSAS_EXTERIOR_AUSENCIA_CORRELACAO</th>
+                        <th>VIAGENS_EXTERIOR_AUSENCIA_CORRELACAO</th>
+                        <th>INQUERITOS</th>
+                        <th>ACOES_PENAIS</th>
+                        <th>CRIPTO_MOEDAS</th>
+                        <th>APOSENTADORIA</th>
+                        <th>PENSAO</th>
+                        <th>FACEBOOK_OSTENTACAO_ROBO</th>
+                        <th>FACEBOOK_OSTENTACAO_VOLUNTARIOS</th>
+                        <th>COAF</th>
+                        <th>SPC_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SERASA_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SCORE_CREDITO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>NOTAS_FISCAIS_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>RGI_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>DETRAN_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>BARCO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>AVIAO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>DOADOR_DE_CAMPANHA</th>
+                        <th>ESCOLARIDADE_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>CAGED_REUNIAO_MPRJ_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SALDO_BANCARIO</th>
+                        <th>MOVIMENTACOES</th>
+                        <th>OUTROS</th>                        
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Deputado</th>
+                        <th>Assessor</th>
+                        <th>Rendimento Funcionário</th>
+                        <th>Rendimento Líquido</th>
+                        <th>Representacao/Gratificação</th>
+                        <th>Score</th>
+                        <th>Socio</th>
+                        <th>SEXO</th>
+                        <th>RACA</th>
+                        <th>PESSOA_COM_DEFICIENCIA</th>
+                        <th>CARGO</th>
+                        <th>GABINETE</th>
+                        <th>SALARIO</th>
+                        <th>DOMICILIO_PROFISSIONAL</th>
+                        <th>TELETRABALHO</th>
+                        <th>NOME_PAIS</th>
+                        <th>NOME_AVOS_PATERNOS</th>
+                        <th>NOME_AVOS_MATERNOS</th>
+                        <th>FILIACAO</th>
+                        <th>CUMULACAO_DE_CARGOS_INACUMULAVEIS</th>
+                        <th>CUMULACAO_DE_CARGOS_ACUMULAVEIS_HORARIOS_INCOMPATIVEIS</th>
+                        <th>OAB_ATIVA_VEDACAO_LEGAL</th>
+                        <th>SOCIO_GERENTE </th>
+                        <th>BOLSA_FAMILIA_VEDACAO_LEGAL</th>
+                        <th>LOAS_BPC_VEDACAO_LEGAL</th>
+                        <th>NEPOTISMO</th>
+                        <th>AUSENCIA_DE_INFORMACOES</th>
+                        <th>VINCULACAO_A_GABINETE_ENVOLVIDO_EM_RACHADINHA_OU_CORRUPCAO</th>
+                        <th>AUXILIO_EDU</th>
+                        <th>AUXILIO_OUTROS</th>
+                        <th>FOLHA_DE_PGTO_AUSENCIA</th>
+                        <th>ORDEM_DE_PGTO_AUSÊNCIA</th>
+                        <th>FOLHA_DIFERENTE_ORDEM</th>
+                        <th>OBITO</th>
+                        <th>SOCIO_EM_EMPRESA</th>
+                        <th>EXPERIENCIA_PROFISSIONAL_CARGO_ATUAL_AUSENCIA_CORRELACAO</th>
+                        <th>EXPERIENCIA_PROFISSIONAL_PPP_INSS_AUSENCIA_CORRELACAO</th>
+                        <th>IDADE_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_ELEITORAL_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_FISCAL_AUSENCIA_CORRELACAO</th>
+                        <th>DOMICILIO_RESIDENCIAL_AUSENCIA_CORRELACAO</th>
+                        <th>AREA_DE_VOTAÇÃO_DO_LEGISLADOR_AUSENCIA_CORRELACAO</th>
+                        <th>REMESSAS_EXTERIOR_AUSENCIA_CORRELACAO</th>
+                        <th>VIAGENS_EXTERIOR_AUSENCIA_CORRELACAO</th>
+                        <th>INQUERITOS</th>
+                        <th>ACOES_PENAIS</th>
+                        <th>CRIPTO_MOEDAS</th>
+                        <th>APOSENTADORIA</th>
+                        <th>PENSAO</th>
+                        <th>FACEBOOK_OSTENTACAO_ROBO</th>
+                        <th>FACEBOOK_OSTENTACAO_VOLUNTARIOS</th>
+                        <th>COAF</th>
+                        <th>SPC_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SERASA_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SCORE_CREDITO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>NOTAS_FISCAIS_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>RGI_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>DETRAN_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>BARCO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>AVIAO_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>DOADOR_DE_CAMPANHA</th>
+                        <th>ESCOLARIDADE_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>CAGED_REUNIAO_MPRJ_AUSENCIA_CORRELACAO_COM_CARGO</th>
+                        <th>SALDO_BANCARIO</th>
+                        <th>MOVIMENTACOES</th>
+                        <th>OUTROS</th>                        
+                    </tr>
+                </tfoot>
+            </table>
+</body>
+</html>
